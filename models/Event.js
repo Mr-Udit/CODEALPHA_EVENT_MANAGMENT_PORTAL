@@ -30,10 +30,11 @@ const eventSchema = new mongoose.Schema({
     required: [true, 'Event capacity is required'],
     min: [1, 'Capacity must be at least 1']
   },
-  registeredUsers: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }],
+  registeredUsers: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'User',
+    default: []
+  },
   category: {
     type: String,
     required: [true, 'Event category is required'],
@@ -68,7 +69,7 @@ const eventSchema = new mongoose.Schema({
   }
 });
 
-// Update the updatedAt field before saving
+// Middleware to update the updatedAt field before saving
 eventSchema.pre('save', function(next) {
   this.updatedAt = Date.now();
   next();
@@ -76,16 +77,16 @@ eventSchema.pre('save', function(next) {
 
 // Virtual for checking if event is full
 eventSchema.virtual('isFull').get(function() {
-  return this.registeredUsers.length >= this.capacity;
+  return (this.registeredUsers?.length || 0) >= this.capacity;
 });
 
 // Virtual for available spots
 eventSchema.virtual('availableSpots').get(function() {
-  return Math.max(0, this.capacity - this.registeredUsers.length);
+  return Math.max(0, this.capacity - (this.registeredUsers?.length || 0));
 });
 
 // Ensure virtual fields are serialized
 eventSchema.set('toJSON', { virtuals: true });
 eventSchema.set('toObject', { virtuals: true });
 
-module.exports = mongoose.model('Event', eventSchema); 
+module.exports = mongoose.model('Event', eventSchema);

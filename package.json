@@ -1,6 +1,6 @@
 {
   "name": "event-management-system",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Node.js event management system with user registration and admin event creation",
   "main": "server.js",
   "scripts": {

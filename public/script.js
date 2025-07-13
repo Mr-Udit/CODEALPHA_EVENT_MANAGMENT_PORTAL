@@ -1,7 +1,7 @@
 // Global variables
 let currentUser = null;
 let authToken = localStorage.getItem('authToken');
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'http://localhost:3000/api';
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
