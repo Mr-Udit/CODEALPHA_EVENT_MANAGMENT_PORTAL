@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Event Manager</span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="#" class="nav-link" onclick="showSection('events')">Events</a>
+                <a href="#" class="nav-link" onclick="showSection('login')" id="loginLink">Login</a>
+                <a href="#" class="nav-link" onclick="showSection('register')" id="registerLink">Register</a>
+                <a href="#" class="nav-link" onclick="showSection('profile')" id="profileLink" style="display: none;">Profile</a>
+                <a href="#" class="nav-link" onclick="showSection('admin')" id="adminLink" style="display: none;">Admin Panel</a>
+                <a href="#" class="nav-link" onclick="logout()" id="logoutLink" style="display: none;">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Events Section -->
+        <section id="events" class="section active">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Upcoming Events</h1>
+                    <div class="filters">
+                        <select id="categoryFilter" onchange="filterEvents()">
+                            <option value="">All Categories</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Business">Business</option>
+                            <option value="Education">Education</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <input type="text" id="searchFilter" placeholder="Search events..." onkeyup="filterEvents()">
+                    </div>
+                </div>
+                <div id="eventsList" class="events-grid">
+                    <!-- Events will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Login Section -->
+        <section id="login" class="section">
+            <div class="container">
+                <div class="auth-form">
+                    <h2>Login</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                    <p class="auth-switch">Don't have an account? <a href="#" onclick="showSection('register')">Register here</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Register Section -->
+        <section id="register" class="section">
+            <div class="container">
+                <div class="auth-form">
+                    <h2>Register</h2>
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label for="registerName">Full Name</label>
+                            <input type="text" id="registerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail">Email</label>
+                            <input type="email" id="registerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">Password</label>
+                            <input type="password" id="registerPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPhone">Phone</label>
+                            <input type="tel" id="registerPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerAddress">Address</label>
+                            <textarea id="registerAddress" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                    <p class="auth-switch">Already have an account? <a href="#" onclick="showSection('login')">Login here</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="section">
+            <div class="container">
+                <div class="profile-content">
+                    <h2>My Profile</h2>
+                    <div class="profile-info">
+                        <div class="info-group">
+                            <label>Name:</label>
+                            <span id="profileName"></span>
+                        </div>
+                        <div class="info-group">
+                            <label>Email:</label>
+                            <span id="profileEmail"></span>
+                        </div>
+                        <div class="info-group">
+                            <label>Phone:</label>
+                            <span id="profilePhone"></span>
+                        </div>
+                        <div class="info-group">
+                            <label>Address:</label>
+                            <span id="profileAddress"></span>
+                        </div>
+                        <div class="info-group">
+                            <label>Role:</label>
+                            <span id="profileRole"></span>
+                        </div>
+                    </div>
+                    <h3>My Registered Events</h3>
+                    <div id="userEvents" class="events-grid">
+                        <!-- User's events will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Panel Section -->
+        <section id="admin" class="section">
+            <div class="container">
+                <div class="admin-content">
+                    <h2>Admin Panel</h2>
+                    
+                    <!-- Create Event Form -->
+                    <div class="admin-section">
+                        <h3>Create New Event</h3>
+                        <form id="createEventForm" class="admin-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="eventTitle">Event Title</label>
+                                    <input type="text" id="eventTitle" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="eventCategory">Category</label>
+                                    <select id="eventCategory" required>
+                                        <option value="Technology">Technology</option>
+                                        <option value="Business">Business</option>
+                                        <option value="Education">Education</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                        <option value="Sports">Sports</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDescription">Description</label>
+                                <textarea id="eventDescription" required></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="eventDate">Date</label>
+                                    <input type="date" id="eventDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="eventTime">Time</label>
+                                    <input type="time" id="eventTime" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="eventLocation">Location</label>
+                                    <input type="text" id="eventLocation" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="eventCapacity">Capacity</label>
+                                    <input type="number" id="eventCapacity" min="1" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventPrice">Price ($)</label>
+                                <input type="number" id="eventPrice" min="0" value="0" step="0.01">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Create Event</button>
+                        </form>
+                    </div>
+
+                    <!-- User Management -->
+                    <div class="admin-section">
+                        <h3>User Management</h3>
+                        <div id="usersList" class="users-list">
+                            <!-- Users will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Event Details -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalContent">
+                <!-- Event details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
